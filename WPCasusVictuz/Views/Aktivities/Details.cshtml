@@ -38,6 +38,37 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
+</div>
+
+<h3>Registered Members</h3>
+
+@if (Model.Registrations != null && Model.Registrations.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Member Name</th>
+                <th>Member Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var registration in Model.Registrations)
+            {
+                <tr>
+                    <td>@registration.Member.Name</td>
+                    <td>@registration.Member.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No members have registered for this activity.</p>
+}
+
+<div>
+    <a asp-action="Index">Back to Activities List</a>
 </div>

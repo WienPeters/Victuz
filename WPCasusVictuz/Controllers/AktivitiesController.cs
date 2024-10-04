@@ -22,8 +22,34 @@ namespace WPCasusVictuz.Controllers
         // GET: Aktivities
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Activities.ToListAsync());
+            // Fetch the activities along with the number of registrations
+            var activities = await _context.Activities
+                .Include(a => a.Registrations)  // Include registrations to count them
+                .ToListAsync();
+
+            return View(activities);
         }
+        public async Task<IActionResult> UpcomActView()
+        {
+            // Fetch the activities along with the number of registrations
+            var activities = await _context.Activities
+                .Where(a => a.Date > DateTime.Now)
+                .Include(a => a.Registrations)  // Include registrations to count them
+                .ToListAsync();
+
+            return View(activities);
+        }
+        public async Task<IActionResult> PastActView()
+        {
+            // Fetch the activities along with the number of registrations
+            var activities = await _context.Activities
+                .Where(a => a.Date < DateTime.Now)
+                .Include(a => a.Registrations)  // Include registrations to count them
+                .ToListAsync();
+
+            return View(activities);
+        }
+
 
         // GET: Aktivities/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -33,14 +59,17 @@ namespace WPCasusVictuz.Controllers
                 return NotFound();
             }
 
-            var aktivity = await _context.Activities
+            var activity = await _context.Activities
+                .Include(a => a.Registrations)
+                    .ThenInclude(r => r.Member)  // Include the Member information for each registration
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (aktivity == null)
+
+            if (activity == null)
             {
                 return NotFound();
             }
 
-            return View(aktivity);
+            return View(activity);
         }
 
         // GET: Aktivities/Create

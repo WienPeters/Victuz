@@ -23,10 +23,7 @@
                 <input asp-for="Options" class="form-control" />
                 <span asp-validation-for="Options" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CreatedByBoardMemberId" class="control-label"></label>
-                <select asp-for="CreatedByBoardMemberId" class ="form-control" asp-items="ViewBag.CreatedByBoardMemberId"></select>
-            </div>
+            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

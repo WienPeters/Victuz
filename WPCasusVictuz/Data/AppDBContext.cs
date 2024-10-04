@@ -1,6 +1,4 @@
 ﻿using WPCasusVictuz.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Reflection.Emit;
@@ -76,6 +74,12 @@ namespace WPCasusVictuz.Data
                 .HasForeignKey(p => p.CreatedByBoardMemberId)  // Foreign key in Poll
                 .OnDelete(DeleteBehavior.NoAction);  // If a BoardMember is deleted, keep the Polls but set CreatedBy null (optional)
 
+            modelBuilder.Entity<BoardMember>()
+                .HasMany(bm => bm.CreatedAktivitys)
+                .WithOne(a => a.MadeBy)
+                .HasForeignKey(a => a.CreatedbyBM)
+                .OnDelete(DeleteBehavior.NoAction);
+
             // 5. Poll to Vote (One-to-Many relationship)
             modelBuilder.Entity<Poll>()
                 .HasMany(p => p.Votes)  // A poll can have many votes
@@ -89,7 +93,16 @@ namespace WPCasusVictuz.Data
                 .WithOne(v => v.Member)  // A vote belongs to one member
                 .HasForeignKey(v => v.MemberId)  // Foreign key in Vote
                 .OnDelete(DeleteBehavior.Cascade);  // If a Member is deleted, their Votes are deleted
+                                                    // Configure the relationship between Member and BoardMember
+            modelBuilder.Entity<Member>()
+                .HasOne(m => m.BoardMember)  // A Member can have one BoardMember (or none)
+                .WithOne(b => b.Member)  // A BoardMember is linked to one Member
+                .HasForeignKey<Member>(m => m.BoardMemberId);  // Foreign key in Member
 
+            modelBuilder.Entity<BoardMember>()
+                .HasOne(m => m.Member)
+                .WithOne(b => b.BoardMember)
+                .HasForeignKey<BoardMember>(m => m.MemberId);
         }
     }
 

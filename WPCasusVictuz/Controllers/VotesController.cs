@@ -61,7 +61,7 @@ namespace WPCasusVictuz.Controllers
         {
             // Ensure that poll and member exist and that selected option is valid
             var poll = _context.Polls.FirstOrDefault(p => p.Id == vote.PollId);
-            if (poll == null || !_context.Members.Any(m => m.Id == vote.MemberId))
+            if (poll == null )
             {
                 ModelState.AddModelError(string.Empty, "Invalid poll or member.");
             }
@@ -72,6 +72,7 @@ namespace WPCasusVictuz.Controllers
 
             if (ModelState.IsValid)
             {
+                vote.MemberId = HttpContext.Session.GetInt32("MemberId");
                 _context.Add(vote);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

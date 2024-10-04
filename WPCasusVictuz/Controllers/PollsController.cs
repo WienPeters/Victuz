@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,12 @@ namespace WPCasusVictuz.Controllers
         // GET: Polls/Create
         public IActionResult Create()
         {
+            // Check if the logged-in user is a board member
+            if (HttpContext.Session.GetString("IsBoardMember") != "true")
+            {
+                return Unauthorized(); // Or redirect to an error page
+            }
+
             ViewData["CreatedByBoardMemberId"] = new SelectList(_context.BoardMembers, "Id", "Name");
             return View();
         }
@@ -55,17 +62,22 @@ namespace WPCasusVictuz.Controllers
         // POST: Polls/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Polls/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Question,Options,CreatedByBoardMemberId")] Poll poll)
+        public async Task<IActionResult> Create([Bind("Id,Question,Options")] Poll poll)
         {
             if (ModelState.IsValid)
             {
+                
+
+                // Automatically set the creator's ID
+                poll.CreatedByBoardMemberId = HttpContext.Session.GetInt32("BoardMemberId");
+
                 _context.Add(poll);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["CreatedByBoardMemberId"] = new SelectList(_context.BoardMembers, "Id", "Name", poll.CreatedByBoardMemberId);
             return View(poll);
         }
 

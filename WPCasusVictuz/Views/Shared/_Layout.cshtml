@@ -1,48 +1,100 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WPCasusVictuz</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WPCasusVictuz.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/bootstrap.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WPCasusVictuz/css/bootstrap.min.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WPCasusVictuz</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="navbarColor03">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Victuz</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <li class="nav-item dropdown text-dark-emphasis">
+                            <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Activities with Victuz </a>
+                            <div class="dropdown-menu text-dark-emphasis">
+                                <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Aktivities" asp-action="UpcomActView">Upcoming activities</a>
+                                <div class="dropdown-divider text-body-tertiary"></div>
+                                <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Aktivities" asp-action="PastActView">Past activities</a>
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Members" asp-action="Create">Register</a>
+                        <li class="nav-divider text-dark accordion">|</li> <!-- Divider -->
+                        <!-- Conditionally display based on login status -->
+                        @if (string.IsNullOrEmpty(Context.Session.GetString("UserName")))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Members" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Members" asp-action="Create">Register</a>
+                            </li>
+                        }
+                        else
+                        {
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Votes" asp-action="Create">Share your opinion!</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Registrations" asp-action="Create">Join a activity!</a>
+                            </li>
+                            <li class="nav-divider text-dark accordion">|</li> <!-- Divider -->
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("IsBoardMember") == "true")
+                            {
+                                <li class="nav-item dropdown text-info-emphasis">
+                                    <a class="nav-link dropdown-toggle text-info-emphasis" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Overview of </a>
+                                    <div class="dropdown-menu text-info-emphasis">
+                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Members" asp-action="Index">All Members</a>
+                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Aktivities" asp-action="Index">All Activities</a>
+                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Polls" asp-action="Index">All Polls</a>
+                                        <div class="dropdown-divider text-danger-emphasis"></div>
+                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Member" asp-action="Indexe">All Boardmembers</a>
+                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Registrations" asp-action="Index">Activity Applications</a>
+                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Votes" asp-action="Index">Given Answers</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown text-danger-emphasis">
+                                    <a class="nav-link text-info-emphasis dropdown-toggle " data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Creation|Organisation</a>
+                                    <div class="dropdown-menu text-info-emphasis">
+                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Aktivities" asp-action="Create">Organise Activities</a>
+                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Polls" asp-action="Create">Ask Questions that require answers</a>
+                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Member" asp-action="Createe">Creation of a Boardmember</a>
+                                    </div>
+                                </li>
+
+                            }@*
+                            <div class="d-flex flex-column align-items-center">
+                                <!-- Flex column to stack elements -->
+                                <span class="navbar-text mb-1">Hello, @Context.Session.GetString("UserName")!</span> <!-- Username -->
+                                <form class="form-inline" asp-area="" asp-controller="Members" asp-action="Logout" method="post">
+                                    <button class="btn btn-info-emphasis" type="submit">Logout</button> <!-- Logout button -->
+                                </form>
+                        </div>*@
+                             <li class="nav-item position-relative text-lg-start">
+                                <span class="navbar-brand text-light-emphasis">Hello, @Context.Session.GetString("UserName")!</span>
+                            </li>
+                            <li class="nav-item position-relative text-xxl-end">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Members" asp-action="Logout">Logout</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Members" asp-action="Index">Members</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Aktivities" asp-action="Create">Creactivity</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Registrations" asp-action="Create">Register2Actuvity</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Polls" asp-action="Create">CreaPoll</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Votes" asp-action="Create">Voteforpoll</a>
-                        </li>
+                        } 
+                        @* <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">See </a>
+                        <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Separated link</a>
+                        </div>
+                        </li> *@
                     </ul>
                 </div>
             </div>

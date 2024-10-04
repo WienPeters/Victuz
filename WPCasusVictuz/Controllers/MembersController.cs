@@ -1,22 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WPCasusVictuz.Data;
 using WPCasusVictuz.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace WPCasusVictuz.Controllers
 {
     public class MembersController : Controller
     {
         private readonly AppDBContext db;
+        
 
         public MembersController(AppDBContext context)
         {
             db = context;
+            
         }
 
         // GET: Members
@@ -59,18 +65,115 @@ namespace WPCasusVictuz.Controllers
             if (ModelState.IsValid)
             {
                 // Optional: Hash the password before saving (using a basic hash mechanism or a library)
-                member.Password = HashPassword(member.Password); // Replace with actual hashing logic
+                //member.Password = HashPassword(member.Password); // Replace with actual hashing logic
+                member.Status = "active";
 
                 db.Members.Add(member);
                 await db.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                HttpContext.Session.SetInt32("UserId", member.Id);
+                HttpContext.Session.SetString("UserName", member.Name);
+                HttpContext.Session.SetInt32("MemberId", member.Id);
+
+                // Redirect to home or any other page
+                return RedirectToAction("Index", "Home");
             }
             return View(member);
         }
+        // GET: Members/Create
+        public IActionResult CreateBoardMember()
+        {
+            ViewBag.MemberId = new SelectList(db.Members, "Id", "Name");
+            return View();
+        }
+
+        // POST: Members/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateBoardMember([Bind("Id, Name, Password, MemberId")] BoardMember bm)
+        {
+            if (ModelState.IsValid)
+            {
+                // Optional: Hash the password before saving (using a basic hash mechanism or a library)
+                //member.Password = HashPassword(member.Password); // Replace with actual hashing logic
+                bm.Name = 
+
+                db.BoardMembers.Add(bm);
+                await db.SaveChangesAsync();
+                //HttpContext.Session.SetInt32("UserId", bmember.Id);
+                //HttpContext.Session.SetString("UserName", bmember.Name);
+                //HttpContext.Session.SetInt32("MemberId", bmember.Id);
+
+                // Redirect to home or any other page
+                return RedirectToAction("Index");
+            }
+            ViewBag.MemberId = new SelectList(db.Members, "Id", "Name", boardMember.MemberId);
+            return View(boardMember);
+        }
+        // GET: Members/Login
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: Members/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(string name, string password)
+        {
+            if (ModelState.IsValid)
+            {
+                // Hash the password before checking
+                //var hashedPassword = HashPassword(password);
+
+                // Check if a member with this name and hashed password exists
+                var member = await db.Members
+                    .Include(m => m.BoardMember) // Include BoardMember info
+                    .FirstOrDefaultAsync(m => m.Name == name && m.Password == password);
+
+                if (member != null)
+                {
+                    // Set the session values
+                    HttpContext.Session.SetString("UserName", member.Name);
+                    HttpContext.Session.SetInt32("MemberId", member.Id);
+
+                    // Check if the member is a board member and store it in session
+                    if (member.BoardMember != null)
+                    {
+                        HttpContext.Session.SetString("IsBoardMember", "true");
+                        HttpContext.Session.SetInt32("BoardMemberId", member.BoardMember.Id);
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("IsBoardMember", "false");
+                    }
+
+                    // Redirect to home or another page
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            }
+            return View();
+        }
+
         private string HashPassword(string password)
         {
-            // A simple placeholder for password hashing (replace this with actual hashing logic)
-            return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(password));
+            // Use SHA256 to hash the password
+            using (var sha256 = SHA256.Create())
+            {
+                var bytes = Encoding.UTF8.GetBytes(password);
+                var hash = sha256.ComputeHash(bytes);
+                return Convert.ToBase64String(hash);
+            }
+        }
+
+        // Logout action
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Members");
         }
 
         // GET: Members/Edit/5

@@ -63,7 +63,11 @@ namespace WPCasusVictuz.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Automatically set the creator's ID
+                registration.MemberId = HttpContext.Session.GetInt32("MemberId");
+
                 _context.Add(registration);
+                
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

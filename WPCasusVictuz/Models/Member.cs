@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WPCasusVictuz.Models
 {
@@ -10,9 +11,11 @@ namespace WPCasusVictuz.Models
         public string? Name { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
-        public string? Status { get; set; }  // Example: Active, Inactive
+        public string Status { get; set; } = "active";// Example: Active, Inactive
 
-       
+        public int? BoardMemberId { get; set; }  // Foreign Key to BoardMember
+        [ForeignKey(nameof(BoardMemberId))]
+        public BoardMember? BoardMember { get; set; }  // Navigation property
 
         // Navigation properties
         public ICollection<Registration>? Registrations { get; set; }  // Many-to-many relationship with Activities

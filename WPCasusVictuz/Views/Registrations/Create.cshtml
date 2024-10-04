@@ -13,11 +13,11 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            @* <div class="form-group">
                 @Html.LabelFor(model => model.MemberId, "Name of member")
                 
                 <select asp-for="MemberId" class="form-control" asp-items="ViewBag.MemberId"></select>
-            </div>
+            </div> *@
             <div class="form-group">
                 @Html.LabelFor(model => model.AktivityId, "Name of activity")
                 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WPCasusVictuz.Data;
 
@@ -11,9 +12,11 @@ using WPCasusVictuz.Data;
 namespace WPCasusVictuz.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241004044906_AddDingsToDb")]
+    partial class AddDingsToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +33,6 @@ namespace WPCasusVictuz.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CreatedbyBM")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
 
@@ -47,35 +47,7 @@ namespace WPCasusVictuz.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedbyBM");
-
                     b.ToTable("Activities");
-                });
-
-            modelBuilder.Entity("WPCasusVictuz.Models.BoardMember", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("MemberId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MemberId")
-                        .IsUnique()
-                        .HasFilter("[MemberId] IS NOT NULL");
-
-                    b.ToTable("BoardMembers");
                 });
 
             modelBuilder.Entity("WPCasusVictuz.Models.Member", b =>
@@ -89,6 +61,11 @@ namespace WPCasusVictuz.Migrations
                     b.Property<int?>("BoardMemberId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -99,12 +76,19 @@ namespace WPCasusVictuz.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BoardMemberId")
+                        .IsUnique()
+                        .HasFilter("[BoardMemberId] IS NOT NULL");
+
                     b.ToTable("Members");
+
+                    b.HasDiscriminator().HasValue("Member");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("WPCasusVictuz.Models.Poll", b =>
@@ -186,23 +170,23 @@ namespace WPCasusVictuz.Migrations
                     b.ToTable("Votes");
                 });
 
-            modelBuilder.Entity("WPCasusVictuz.Models.Aktivity", b =>
-                {
-                    b.HasOne("WPCasusVictuz.Models.BoardMember", "MadeBy")
-                        .WithMany("CreatedAktivitys")
-                        .HasForeignKey("CreatedbyBM")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("MadeBy");
-                });
-
             modelBuilder.Entity("WPCasusVictuz.Models.BoardMember", b =>
                 {
-                    b.HasOne("WPCasusVictuz.Models.Member", "Member")
-                        .WithOne("BoardMember")
-                        .HasForeignKey("WPCasusVictuz.Models.BoardMember", "MemberId");
+                    b.HasBaseType("WPCasusVictuz.Models.Member");
 
-                    b.Navigation("Member");
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("BoardMember");
+                });
+
+            modelBuilder.Entity("WPCasusVictuz.Models.Member", b =>
+                {
+                    b.HasOne("WPCasusVictuz.Models.BoardMember", "BoardMember")
+                        .WithOne("Member")
+                        .HasForeignKey("WPCasusVictuz.Models.Member", "BoardMemberId");
+
+                    b.Navigation("BoardMember");
                 });
 
             modelBuilder.Entity("WPCasusVictuz.Models.Poll", b =>
@@ -254,17 +238,8 @@ namespace WPCasusVictuz.Migrations
                     b.Navigation("Registrations");
                 });
 
-            modelBuilder.Entity("WPCasusVictuz.Models.BoardMember", b =>
-                {
-                    b.Navigation("CreatedAktivitys");
-
-                    b.Navigation("CreatedPolls");
-                });
-
             modelBuilder.Entity("WPCasusVictuz.Models.Member", b =>
                 {
-                    b.Navigation("BoardMember");
-
                     b.Navigation("Registrations");
 
                     b.Navigation("Votes");
@@ -273,6 +248,13 @@ namespace WPCasusVictuz.Migrations
             modelBuilder.Entity("WPCasusVictuz.Models.Poll", b =>
                 {
                     b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("WPCasusVictuz.Models.BoardMember", b =>
+                {
+                    b.Navigation("CreatedPolls");
+
+                    b.Navigation("Member");
                 });
 #pragma warning restore 612, 618
         }

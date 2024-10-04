@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WPCasusVictuz.Data;
 
@@ -11,9 +12,11 @@ using WPCasusVictuz.Data;
 namespace WPCasusVictuz.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241004050647_AddiyToDb")]
+    partial class AddiyToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +33,6 @@ namespace WPCasusVictuz.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CreatedbyBM")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
 
@@ -46,8 +46,6 @@ namespace WPCasusVictuz.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedbyBM");
 
                     b.ToTable("Activities");
                 });
@@ -99,7 +97,6 @@ namespace WPCasusVictuz.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -186,16 +183,6 @@ namespace WPCasusVictuz.Migrations
                     b.ToTable("Votes");
                 });
 
-            modelBuilder.Entity("WPCasusVictuz.Models.Aktivity", b =>
-                {
-                    b.HasOne("WPCasusVictuz.Models.BoardMember", "MadeBy")
-                        .WithMany("CreatedAktivitys")
-                        .HasForeignKey("CreatedbyBM")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("MadeBy");
-                });
-
             modelBuilder.Entity("WPCasusVictuz.Models.BoardMember", b =>
                 {
                     b.HasOne("WPCasusVictuz.Models.Member", "Member")
@@ -256,8 +243,6 @@ namespace WPCasusVictuz.Migrations
 
             modelBuilder.Entity("WPCasusVictuz.Models.BoardMember", b =>
                 {
-                    b.Navigation("CreatedAktivitys");
-
                     b.Navigation("CreatedPolls");
                 });
 
