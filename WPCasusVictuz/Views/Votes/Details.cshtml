@@ -1,0 +1,37 @@
+﻿@model WPCasusVictuz.Models.Vote
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Vote</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SelectedOption) <!-- Display name for SelectedOption -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SelectedOption) <!-- Display the selected option -->
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Poll.Question) <!-- Display name for Poll Question -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Poll.Question) <!-- Display the poll question -->
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Member.Name) <!-- Display name for Member Name -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Member.Name) <!-- Display the member's name -->
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
