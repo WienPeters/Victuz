@@ -94,6 +94,25 @@ namespace WPCasusVictuz.Controllers
 
             return Json(poll.Options);  // Return the poll options
         }
+        // GET: Votes/Create
+        public IActionResult CreateIdea()
+        {
+            ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Name");
+            //only the member is required for a idea suggestion
+            return View();
+        }
+
+        // POST: Votes/Create
+        [HttpPost]
+        
+        public async Task<IActionResult> CreateIdea([Bind("Id,MemberId,SelectedOption")] Vote vote)
+        {
+            vote.PollId = null;
+                vote.MemberId = HttpContext.Session.GetInt32("MemberId");
+                _context.Add(vote);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+        }
 
         // GET: Votes/Edit/5
         public async Task<IActionResult> Edit(int? id)

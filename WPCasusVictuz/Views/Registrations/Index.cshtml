@@ -14,13 +14,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.RegistrationDate)
+                Date of registration
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Member.Name)
+                Participant name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Aktivity.Name)
+                Activity
             </th>
             <th></th>
         </tr>
@@ -38,9 +38,8 @@
                 @Html.DisplayFor(modelItem => item.Aktivity.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                
+                <a asp-action="Delete" asp-route-id="@item.Id">Unroll from activity</a>
             </td>
         </tr>
 }

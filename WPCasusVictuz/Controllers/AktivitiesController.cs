@@ -20,14 +20,29 @@ namespace WPCasusVictuz.Controllers
         }
 
         // GET: Aktivities
-        public async Task<IActionResult> Index()
-        {
-            // Fetch the activities along with the number of registrations
-            var activities = await _context.Activities
-                .Include(a => a.Registrations)  // Include registrations to count them
-                .ToListAsync();
+        //public async Task<IActionResult> Index()
+        //{
+        //    // Fetch the activities along with the number of registrations
+        //    var activities = await _context.Activities
+        //        .Include(a => a.Registrations)  // Include registrations to count them
+        //        .ToListAsync();
 
-            return View(activities);
+        //    return View(activities);
+        //}
+        public async Task<IActionResult> Index(string searchTerm)
+        {
+            // Start met een query die alle activiteiten selecteert
+            var activities = from a in _context.Activities
+                             select a;
+
+            // Als de zoekterm niet leeg is, filteren op naam
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                activities = activities.Where(a => a.Name.Contains(searchTerm)|| a.Description.Contains(searchTerm));
+            }
+
+            // Stuur de lijst van activiteiten naar de view
+            return View(await activities.ToListAsync());
         }
         public async Task<IActionResult> UpcomActView()
         {

@@ -7,6 +7,8 @@ namespace WPCasusVictuz.Models
     {
         [Key]
         public int Id { get; set; }  // Primary Key
+        public string? Category { get; set; }
+        public string? Location { get; set; }
         public int? CreatedbyBM { get; set; }
         [ForeignKey(nameof(CreatedbyBM))]
         public BoardMember? MadeBy { get; set; }

@@ -13,6 +13,7 @@ namespace WPCasusVictuz.Data
         public AppDBContext(DbContextOptions<AppDBContext> contextOptions) : base(contextOptions)
         {
         }
+        public DbSet<Picture> Pictures { get; set; } 
         public DbSet<Member> Members { get; set; }
         public DbSet<BoardMember> BoardMembers { get; set; }
         public DbSet<Aktivity> Activities { get; set; }
@@ -58,7 +59,9 @@ namespace WPCasusVictuz.Data
                 .HasForeignKey(r => r.MemberId)  // Foreign key in Registration
                 
                 .OnDelete(DeleteBehavior.Cascade);  // If a Member is deleted, all their Registrations are deleted
-                
+            modelBuilder.Entity<Aktivity>()
+                .HasIndex(a => a.Name)
+                .HasDatabaseName("IX_Aktivity_Name");
 
             // 3. Activity to Registration (One-to-Many relationship)
             modelBuilder.Entity<Aktivity>()

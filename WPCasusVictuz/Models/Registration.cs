@@ -13,6 +13,8 @@ namespace WPCasusVictuz.Models
         public int? AktivityId { get; set; }  // Foreign Key linking to Activity
         public DateTime? RegistrationDate { get; set; } = DateTime.Now;
 
+        //public DateTime? DeRegistrationDate { get; set; } = DateTime.Now;
+
         // Navigation properties
         [ForeignKey(nameof(MemberId))]
         public Member? Member { get; set; }

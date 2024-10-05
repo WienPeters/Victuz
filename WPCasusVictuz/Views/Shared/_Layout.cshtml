@@ -13,11 +13,17 @@
     <header>
         <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
-                <div class="collapse navbar-collapse" id="navbarColor03">
+                <div class="collapse navbar-collapse" id="navbarColor03">       
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Victuz</a>
+                        <li class="nav-item dropdown text-dark-emphasis">
+                            <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Victuz </a>
+                            <div class="dropdown-menu text-dark-emphasis">
+                                <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Home" asp-action="UpcomActView">About Victuz</a>
+                                <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Home" asp-action="PastActView">How to Contact Victuz</a>
+                                <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Home" asp-action="BuLaw">bylaws</a>
+                            </div>
                         </li>
+                        
                         <li class="nav-item dropdown text-dark-emphasis">
                             <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Activities with Victuz </a>
                             <div class="dropdown-menu text-dark-emphasis">
@@ -26,7 +32,8 @@
                                 <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Aktivities" asp-action="PastActView">Past activities</a>
                             </div>
                         </li>
-                        <li class="nav-divider text-dark accordion">|</li> <!-- Divider -->
+                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Home" asp-action="ImagepageView">Pictures of Victuz</a>
+                        <li class="nav-divider text-dark accordion"></li> <!-- Divider -->
                         <!-- Conditionally display based on login status -->
                         @if (string.IsNullOrEmpty(Context.Session.GetString("UserName")))
                         {
@@ -39,14 +46,22 @@
                         }
                         else
                         {
-
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Votes" asp-action="Create">Share your opinion!</a>
+                            <li class="nav-item dropdown text-dark-emphasis">
+                                <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Share your thoughts </a>
+                                <div class="dropdown-menu text-dark-emphasis">
+                                    <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Votes" asp-action="Create">Answer a poll!</a>
+                                    <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Votes" asp-action="createIdea">Suggest a Idea!</a>
+                                    
+                                </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Registrations" asp-action="Create">Join a activity!</a>
+                            <li class="nav-item dropdown text-dark-emphasis">
+                                <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Activitiy </a>
+                                <div class="dropdown-menu text-dark-emphasis">
+                                <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Registrations" asp-action="Create">Join a activity!</a>
+                                <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Aktivities" asp-action="Index">Search for  activity</a>
+                                </div>
                             </li>
-                            <li class="nav-divider text-dark accordion">|</li> <!-- Divider -->
+                            <li class="nav-divider text-dark accordion"></li> <!-- Divider -->
                             @if (HttpContextAccessor.HttpContext.Session.GetString("IsBoardMember") == "true")
                             {
                                 <li class="nav-item dropdown text-info-emphasis">
@@ -66,7 +81,7 @@
                                     <div class="dropdown-menu text-info-emphasis">
                                         <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Aktivities" asp-action="Create">Organise Activities</a>
                                         <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Polls" asp-action="Create">Ask Questions that require answers</a>
-                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Member" asp-action="Createe">Creation of a Boardmember</a>
+                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Members" asp-action="CreateBoardmember">Creation of a Boardmember</a>
                                     </div>
                                 </li>
 

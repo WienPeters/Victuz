@@ -91,25 +91,28 @@ namespace WPCasusVictuz.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateBoardMember([Bind("Id, Name, Password, MemberId")] BoardMember bm)
+        public async Task<IActionResult> CreateBoardMember([Bind("Name, Password, MemberId")] BoardMember bm)
         {
             if (ModelState.IsValid)
             {
-                // Optional: Hash the password before saving (using a basic hash mechanism or a library)
-                //member.Password = HashPassword(member.Password); // Replace with actual hashing logic
-                bm.Name = 
+                // Optional: Hash the password before saving
+                // Gebruik een daadwerkelijke hash functie
 
+                // Opslaan in de database
                 db.BoardMembers.Add(bm);
                 await db.SaveChangesAsync();
-                //HttpContext.Session.SetInt32("UserId", bmember.Id);
-                //HttpContext.Session.SetString("UserName", bmember.Name);
-                //HttpContext.Session.SetInt32("MemberId", bmember.Id);
 
-                // Redirect to home or any other page
+                // Optioneel: Stel sessievariabelen in of andere logica
+                HttpContext.Session.SetInt32("BoardMemberId", bm.Id);
+                HttpContext.Session.SetString("UserName", bm.Name);
+
+                // Redirect naar de index of een andere pagina
                 return RedirectToAction("Index");
             }
-            ViewBag.MemberId = new SelectList(db.Members, "Id", "Name", boardMember.MemberId);
-            return View(boardMember);
+
+            // Als er een fout is, herlaad de MemberId lijst en toon het formulier opnieuw
+            ViewBag.MemberId = new SelectList(db.Members, "Id", "Name", bm.MemberId);
+            return View(bm);
         }
         // GET: Members/Login
         public IActionResult Login()

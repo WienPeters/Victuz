@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WPCasusVictuz.Data;
 
@@ -11,9 +12,11 @@ using WPCasusVictuz.Data;
 namespace WPCasusVictuz.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241005162027_AddAttributes2Activity")]
+    partial class AddAttributes2Activity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,14 +52,11 @@ namespace WPCasusVictuz.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedbyBM");
-
-                    b.HasIndex("Name")
-                        .HasDatabaseName("IX_Aktivity_Name");
 
                     b.ToTable("Activities");
                 });
@@ -114,36 +114,6 @@ namespace WPCasusVictuz.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Members");
-                });
-
-            modelBuilder.Entity("WPCasusVictuz.Models.Picture", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AddedByBoardMemberId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AddedByMemberId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UploadDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddedByBoardMemberId");
-
-                    b.HasIndex("AddedByMemberId");
-
-                    b.ToTable("Pictures");
                 });
 
             modelBuilder.Entity("WPCasusVictuz.Models.Poll", b =>
@@ -242,21 +212,6 @@ namespace WPCasusVictuz.Migrations
                         .HasForeignKey("WPCasusVictuz.Models.BoardMember", "MemberId");
 
                     b.Navigation("Member");
-                });
-
-            modelBuilder.Entity("WPCasusVictuz.Models.Picture", b =>
-                {
-                    b.HasOne("WPCasusVictuz.Models.BoardMember", "AddedByBoardMember")
-                        .WithMany()
-                        .HasForeignKey("AddedByBoardMemberId");
-
-                    b.HasOne("WPCasusVictuz.Models.Member", "AddedByMember")
-                        .WithMany()
-                        .HasForeignKey("AddedByMemberId");
-
-                    b.Navigation("AddedByBoardMember");
-
-                    b.Navigation("AddedByMember");
                 });
 
             modelBuilder.Entity("WPCasusVictuz.Models.Poll", b =>

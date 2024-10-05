@@ -18,6 +18,7 @@ namespace WPCasusVictuz.Models
         public BoardMember? BoardMember { get; set; }  // Navigation property
 
         // Navigation properties
+        //public ICollection<string>? Ideas { get; set; }
         public ICollection<Registration>? Registrations { get; set; }  // Many-to-many relationship with Activities
         public ICollection<Vote>? Votes { get; set; }  // One member can vote in many polls
     }

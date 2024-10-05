@@ -1,0 +1,34 @@
+﻿@model IEnumerable<WPCasusVictuz.Models.Picture>
+
+<h2>Uploaded Pictures</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Picture</th>
+            <th>Uploaded By</th>
+            <th>Upload Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pic in Model)
+        {
+            <tr>
+                <td><img src="@pic.FilePath" alt="Uploaded picture" style="max-width: 150px;" /></td>
+                <td>
+                    @if (pic.AddedByBoardMember != null)
+                    {
+                        @pic.AddedByBoardMember.Name
+                        //Board Member)
+                    }
+                    else if (pic.AddedByMember != null)
+                    {
+                        @pic.AddedByMember.Name
+                        //(Member)
+                    }
+                </td>
+                <td>@pic.UploadDate.ToString("g")</td>
+            </tr>
+        }
+    </tbody>
+</table>
