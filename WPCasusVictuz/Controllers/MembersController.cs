@@ -139,6 +139,7 @@ namespace WPCasusVictuz.Controllers
                 {
                     // Set the session values
                     HttpContext.Session.SetString("UserName", member.Name);
+                    HttpContext.Session.SetString("UserId", member.Id.ToString());
                     HttpContext.Session.SetInt32("MemberId", member.Id);
 
                     // Check if the member is a board member and store it in session

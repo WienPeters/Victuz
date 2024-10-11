@@ -11,11 +11,13 @@ public class PictureController : Controller
 {
     private readonly AppDBContext _context;
     private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public PictureController(AppDBContext context, IWebHostEnvironment webHostEnvironment)
+    public PictureController(AppDBContext context, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _webHostEnvironment = webHostEnvironment;
+        _httpContextAccessor = httpContextAccessor;
     }
     public async Task<IActionResult> Index()
     {
@@ -29,6 +31,10 @@ public class PictureController : Controller
     // GET: Upload Picture
     public IActionResult UploadPicture()
     {
+        if (_httpContextAccessor.HttpContext.Session.GetString("IsBoardMember") != "true")
+        {
+            return RedirectToAction("Login", "Members"); // Redirect unauthorized users to the homepage
+        }
         return View();
     }
 
@@ -37,6 +43,12 @@ public class PictureController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UploadPicture(IFormFile file)
     {
+        //if (_httpContextAccessor.HttpContext.Session.GetString("IsBoardMember") != "true")
+        //{
+        //    return RedirectToAction("Index", "Home"); // Redirect unauthorized users to the homepage
+        //}
+
+        
         if (file == null || file.Length == 0)
         {
             ModelState.AddModelError(string.Empty, "Please select a valid picture.");

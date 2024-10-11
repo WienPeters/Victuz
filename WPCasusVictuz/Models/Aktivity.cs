@@ -14,7 +14,9 @@ namespace WPCasusVictuz.Models
         public BoardMember? MadeBy { get; set; }
         public string? Name { get; set; }
         public DateTime? Date { get; set; }
+
         public int? MaxParticipants { get; set; }
+        public int CurrentParticipants { get; set; } = 0;
         public string? Description { get; set; }
 
         // Navigation properties

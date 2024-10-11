@@ -57,8 +57,13 @@ namespace WPCasusVictuz.Data
                 .HasMany(m => m.Registrations)  // A member can have many registrations
                 .WithOne(r => r.Member)  // A registration belongs to one member
                 .HasForeignKey(r => r.MemberId)  // Foreign key in Registration
-                
                 .OnDelete(DeleteBehavior.Cascade);  // If a Member is deleted, all their Registrations are deleted
+
+
+            modelBuilder.Entity<Registration>()
+            .HasIndex(r => new { r.MemberId, r.AktivityId })
+            .IsUnique(); // Zorg ervoor dat een lid zich niet meerdere keren kan registreren voor dezelfde activiteit
+
             modelBuilder.Entity<Aktivity>()
                 .HasIndex(a => a.Name)
                 .HasDatabaseName("IX_Aktivity_Name");
@@ -82,6 +87,19 @@ namespace WPCasusVictuz.Data
                 .WithOne(a => a.MadeBy)
                 .HasForeignKey(a => a.CreatedbyBM)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            // Definieer de relaties
+            modelBuilder.Entity<Registration>()
+                .HasOne(r => r.Aktivity)
+                .WithMany(a => a.Registrations)
+                .HasForeignKey(r => r.AktivityId)
+                .OnDelete(DeleteBehavior.Cascade); // Als een activiteit wordt verwijderd, worden alle registraties ook verwijderd
+
+            modelBuilder.Entity<Registration>()
+                .HasOne(r => r.Member)
+                .WithMany(m => m.Registrations)
+                .HasForeignKey(r => r.MemberId)
+                .OnDelete(DeleteBehavior.Cascade); // Als een lid wordt verwijderd, worden hun registraties ook verwijderd
 
             // 5. Poll to Vote (One-to-Many relationship)
             modelBuilder.Entity<Poll>()

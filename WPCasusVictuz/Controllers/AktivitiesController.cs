@@ -19,16 +19,7 @@ namespace WPCasusVictuz.Controllers
             _context = context;
         }
 
-        // GET: Aktivities
-        //public async Task<IActionResult> Index()
-        //{
-        //    // Fetch the activities along with the number of registrations
-        //    var activities = await _context.Activities
-        //        .Include(a => a.Registrations)  // Include registrations to count them
-        //        .ToListAsync();
 
-        //    return View(activities);
-        //}
         public async Task<IActionResult> Index(string searchTerm)
         {
             // Start met een query die alle activiteiten selecteert
@@ -67,17 +58,12 @@ namespace WPCasusVictuz.Controllers
 
 
         // GET: Aktivities/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var activity = await _context.Activities
                 .Include(a => a.Registrations)
-                    .ThenInclude(r => r.Member)  // Include the Member information for each registration
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .ThenInclude(r => r.Member)  // Ensure related members are loaded
+                .FirstOrDefaultAsync(a => a.Id == id);
 
             if (activity == null)
             {
@@ -98,7 +84,7 @@ namespace WPCasusVictuz.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Date,MaxParticipants,Description")] Aktivity aktivity)
+        public async Task<IActionResult> Create([Bind("Id,Name,Date,MaxParticipants,Description,Location,Category")] Aktivity aktivity)
         {
             if (ModelState.IsValid)
             {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WPCasusVictuz.Data;
 
@@ -11,9 +12,11 @@ using WPCasusVictuz.Data;
 namespace WPCasusVictuz.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241010145039_update10toDB")]
+    partial class update10toDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +64,7 @@ namespace WPCasusVictuz.Migrations
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_Aktivity_Name");
 
-                    b.ToTable("Activities", (string)null);
+                    b.ToTable("Activities");
                 });
 
             modelBuilder.Entity("WPCasusVictuz.Models.BoardMember", b =>
@@ -87,7 +90,7 @@ namespace WPCasusVictuz.Migrations
                         .IsUnique()
                         .HasFilter("[MemberId] IS NOT NULL");
 
-                    b.ToTable("BoardMembers", (string)null);
+                    b.ToTable("BoardMembers");
                 });
 
             modelBuilder.Entity("WPCasusVictuz.Models.Member", b =>
@@ -116,7 +119,7 @@ namespace WPCasusVictuz.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Members", (string)null);
+                    b.ToTable("Members");
                 });
 
             modelBuilder.Entity("WPCasusVictuz.Models.Picture", b =>
@@ -146,7 +149,7 @@ namespace WPCasusVictuz.Migrations
 
                     b.HasIndex("AddedByMemberId");
 
-                    b.ToTable("Pictures", (string)null);
+                    b.ToTable("Pictures");
                 });
 
             modelBuilder.Entity("WPCasusVictuz.Models.Poll", b =>
@@ -173,7 +176,7 @@ namespace WPCasusVictuz.Migrations
 
                     b.HasIndex("CreatedByBoardMemberId");
 
-                    b.ToTable("Polls", (string)null);
+                    b.ToTable("Polls");
                 });
 
             modelBuilder.Entity("WPCasusVictuz.Models.Registration", b =>
@@ -201,7 +204,7 @@ namespace WPCasusVictuz.Migrations
                         .IsUnique()
                         .HasFilter("[MemberId] IS NOT NULL AND [AktivityId] IS NOT NULL");
 
-                    b.ToTable("Registrations", (string)null);
+                    b.ToTable("Registrations");
                 });
 
             modelBuilder.Entity("WPCasusVictuz.Models.Vote", b =>
@@ -227,7 +230,7 @@ namespace WPCasusVictuz.Migrations
 
                     b.HasIndex("PollId");
 
-                    b.ToTable("Votes", (string)null);
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("WPCasusVictuz.Models.Aktivity", b =>

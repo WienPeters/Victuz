@@ -32,8 +32,12 @@
                                 <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Aktivities" asp-action="PastActView">Past activities</a>
                             </div>
                         </li>
-                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Home" asp-action="ImagepageView">Pictures of Victuz</a>
-                        <li class="nav-divider text-dark accordion"></li> <!-- Divider -->
+                        <li class="nav-item dropdown text-dark-emphasis">
+                            <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Victuz Media </a>
+                            <div class="dropdown-menu text-dark-emphasis">
+                                <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Picture" asp-action="Index">Pictures of Victuz</a>
+                                <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Picture" asp-action="UploadPicture">Upload a picture</a>
+                                <li class="nav-divider text-dark accordion"></li> <!-- Divider -->
                         <!-- Conditionally display based on login status -->
                         @if (string.IsNullOrEmpty(Context.Session.GetString("UserName")))
                         {
@@ -58,7 +62,7 @@
                                 <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Activitiy </a>
                                 <div class="dropdown-menu text-dark-emphasis">
                                 <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Registrations" asp-action="Create">Join a activity!</a>
-                                <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Aktivities" asp-action="Index">Search for  activity</a>
+                                <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Aktivities" asp-action="Index">Search for a activity</a>
                                 </div>
                             </li>
                             <li class="nav-divider text-dark accordion"></li> <!-- Divider -->
