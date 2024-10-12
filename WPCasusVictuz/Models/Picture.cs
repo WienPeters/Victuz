@@ -8,10 +8,6 @@ namespace WPCasusVictuz.Models
 
         public string FilePath { get; set; }
 
-        public int? AddedByMemberId { get; set; }
-        [ForeignKey(nameof(AddedByMemberId))]
-        public Member? AddedByMember { get; set; }
-
         public int? AddedByBoardMemberId { get; set; }
         [ForeignKey(nameof(AddedByBoardMemberId))]
         public BoardMember? AddedByBoardMember { get; set; }

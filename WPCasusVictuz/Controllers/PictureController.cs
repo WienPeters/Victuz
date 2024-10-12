@@ -22,7 +22,6 @@ public class PictureController : Controller
     public async Task<IActionResult> Index()
     {
         var pictures = await _context.Pictures
-            .Include(p => p.AddedByMember)
             .Include(p => p.AddedByBoardMember)
             .ToListAsync();
 
@@ -78,21 +77,16 @@ public class PictureController : Controller
 
         // Determine whether it's a Member or BoardMember
         var userId = HttpContext.Session.GetInt32("UserId");
-        var isBoardMember = HttpContext.Session.GetInt32("IsBoardMember") == 1;
+        var isBoardMember = HttpContext.Session.GetInt32("IsBoardMember") ;
 
         var picture = new Picture
         {
             FilePath = "/uploads/" + uniqueFileName
         };
 
-        if (isBoardMember)
-        {
-            picture.AddedByBoardMemberId = userId;  // Assign BoardMember as uploader
-        }
-        else
-        {
-            picture.AddedByMemberId = userId;  // Assign Member as uploader
-        }
+        
+        picture.AddedByBoardMemberId = HttpContext.Session.GetInt32("BoardMemberId"); ;  // Assign Member as uploader
+        
 
         // Save the Picture record to the database
         _context.Pictures.Add(picture);

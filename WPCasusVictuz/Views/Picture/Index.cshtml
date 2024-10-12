@@ -1,33 +1,44 @@
 ﻿@model IEnumerable<WPCasusVictuz.Models.Picture>
 
+@{
+    ViewData["Title"] = "Picture Gallery";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 <h2>Uploaded Pictures</h2>
 
-<table class="table">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Picture</th>
             <th>Uploaded By</th>
-            <th>Upload Date</th>
+            <th>Date Uploaded</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var pic in Model)
+        @foreach (var picture in Model)
         {
             <tr>
-                <td><img src="@pic.FilePath" alt="Uploaded picture" style="max-width: 150px;" /></td>
                 <td>
-                    @if (pic.AddedByBoardMember != null)
+                    <img src="@picture.FilePath" alt="Uploaded Picture" style="width:150px;" />
+                </td>
+                <td>
+                    @if (picture.AddedByBoardMember != null)
                     {
-                        @pic.AddedByBoardMember.Name
-                        //Board Member)
+                        <p>Board Member: @picture.AddedByBoardMember.Name</p>
                     }
-                    else if (pic.AddedByMember != null)
+                    else if (picture.AddedByBoardMember != null)
                     {
-                        @pic.AddedByMember.Name
-                        //(Member)
+                        <p>Member: @picture.AddedByBoardMember.Name</p>
+                    }
+                    else
+                    {
+                        <p>Unknown Uploader</p>
                     }
                 </td>
-                <td>@pic.UploadDate.ToString("g")</td>
+                <td>
+                    @picture.UploadDate.ToString("dd/MM/yyyy HH:mm")
+                </td>
             </tr>
         }
     </tbody>

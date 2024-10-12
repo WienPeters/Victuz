@@ -47,6 +47,65 @@ namespace WPCasusVictuz.Data
 
             modelBuilder.Entity<Poll>()
                 .Property(p => p.Options)
+                .HasConversion(optionsConverter)
+                .Metadata.SetValueComparer(optionsComparer);
+
+            // Member to Registration (One-to-Many)
+            modelBuilder.Entity<Member>()
+                .HasMany(m => m.Registrations)
+                .WithOne(r => r.Member)
+                .HasForeignKey(r => r.MemberId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Aktivity to Registration (One-to-Many)
+            modelBuilder.Entity<Aktivity>()
+                .HasMany(a => a.Registrations)
+                .WithOne(r => r.Aktivity)
+                .HasForeignKey(r => r.AktivityId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Ensure Member can't register twice for the same activity
+            modelBuilder.Entity<Registration>()
+                .HasIndex(r => new { r.MemberId, r.AktivityId })
+                .IsUnique();
+
+            // Poll to Vote (One-to-Many)
+            modelBuilder.Entity<Poll>()
+                .HasMany(p => p.Votes)
+                .WithOne(v => v.Poll)
+                .HasForeignKey(v => v.PollId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Member to Vote (One-to-Many)
+            modelBuilder.Entity<Member>()
+                .HasMany(m => m.Votes)
+                .WithOne(v => v.Member)
+                .HasForeignKey(v => v.MemberId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Member to BoardMember (One-to-One)
+            modelBuilder.Entity<Member>()
+                .HasOne(m => m.BoardMember)
+                .WithOne(b => b.Member)
+                .HasForeignKey<BoardMember>(b => b.MemberId);
+
+            // BoardMember to Polls (One-to-Many)
+            modelBuilder.Entity<BoardMember>()
+                .HasMany(bm => bm.CreatedPolls)
+                .WithOne(p => p.CreatedBy)
+                .HasForeignKey(p => p.CreatedByBoardMemberId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // BoardMember to Aktivity (One-to-Many)
+            modelBuilder.Entity<BoardMember>()
+                .HasMany(bm => bm.CreatedAktivitys)
+                .WithOne(a => a.MadeBy)
+                .HasForeignKey(a => a.CreatedbyBM)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Poll>()
+                .Property(p => p.Options)
                 .HasConversion(optionsConverter)  // Use the value converter for List<string>
                 .Metadata.SetValueComparer(optionsComparer);  // Set the value comparer for List<string>
 
