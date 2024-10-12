@@ -1,32 +1,37 @@
 ﻿@model IEnumerable<WPCasusVictuz.Models.Aktivity>
 
 @{
-    ViewData["Title"] = "UpcomActView";
+    ViewData["Title"] = "Aankomende activiteiten";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>UpcomActView</h1>
+<h1>Aankomende activiteiten</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
+            
             <th>
-                @Html.DisplayNameFor(model => model.MadeBy)
+                Naam activiteit
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Beschrijving activiteit
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                Datum activiteit
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaxParticipants)
+                Inschrijvingen
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Max inschrijvingen
+            </th>
+            <th>
+                Categorie
+            </th>
+            <th>
+                Locatie
             </th>
             <th></th>
         </tr>
@@ -34,25 +39,30 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MadeBy.Id)
-            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxParticipants)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentParticipants)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxParticipants)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category) <!-- Aanpassing hier -->
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location) <!-- Aanpassing hier -->
+            </td>
+            <td>    
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
             </td>
         </tr>
 }

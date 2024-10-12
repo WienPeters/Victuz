@@ -76,22 +76,45 @@ namespace WPCasusVictuz.Controllers
         // GET: Aktivities/Create
         public IActionResult Create()
         {
+            // Check if the user is a board member before allowing access to the creation page
+            if (HttpContext.Session.GetString("IsBoardMember") != "true")
+            {
+                TempData["Error"] = "Only board members can create activities.";
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
         // POST: Aktivities/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Date,MaxParticipants,Description,Location,Category")] Aktivity aktivity)
+        public async Task<IActionResult> Create([Bind("Id,Name,Date,MaxParticipants,Description,Location,Category,CreatedbyBM")] Aktivity aktivity)
         {
+            // Check if the user is a board member before processing the creation request
+            if (HttpContext.Session.GetString("IsBoardMember") != "true")
+            {
+                TempData["Error"] = "You are not authorized to create activities.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Get the logged-in board member ID
+            var boardMemberId = HttpContext.Session.GetInt32("BoardMemberId");
+
+            // Check if the ModelState is valid
             if (ModelState.IsValid)
             {
+                // Assign the logged-in board member as the organizer
+                aktivity.CreatedbyBM = boardMemberId;
+
+                // Add the new activity to the database
                 _context.Add(aktivity);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
+
+            // If ModelState is not valid, return the same view with the model
             return View(aktivity);
         }
 

@@ -85,7 +85,7 @@ public class PictureController : Controller
         };
 
         
-        picture.AddedByBoardMemberId = HttpContext.Session.GetInt32("BoardMemberId"); ;  // Assign Member as uploader
+        picture.AddedByBoardMemberId = HttpContext.Session.GetInt32("BoardMemberId");   // Assign Member as uploader
         
 
         // Save the Picture record to the database
