@@ -17,10 +17,29 @@ namespace WPCasusVictuz.Controllers
         {
             return View();
         }
-
-        public IActionResult Privacy()
+        public IActionResult Bylaw()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Contact()
+        {
+            return View(new ContactFormModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SubmitContactForm(ContactFormModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Hier kan je de logica toevoegen om het bericht te versturen, zoals een e-mail
+                TempData["Success"] = "Je bericht is succesvol verstuurd!";
+                return RedirectToAction("Contact");
+            }
+
+            return View("Contact", model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

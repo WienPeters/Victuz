@@ -1,0 +1,64 @@
+﻿@model ContactFormModel
+
+@{
+    ViewData["Title"] = "Contact Victuz";
+}
+
+<h2>Neem Contact Op met Victuz</h2>
+
+<p>
+    Victuz is de studievereniging voor ICT-studenten aan Zuyd Hogeschool, opgericht met als doel het organiseren van activiteiten en het faciliteren van een community voor studenten. Heb je vragen, suggesties of wil je bijdragen aan de vereniging? Neem dan gerust contact met ons op via het onderstaande formulier.
+</p>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Contactformulier</h4>
+        <form asp-action="SubmitContactForm" method="post">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Naam</label>
+                <input asp-for="Name" class="form-control" placeholder="Jouw naam" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">E-mail</label>
+                <input asp-for="Email" class="form-control" placeholder="Jouw e-mailadres" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message" class="control-label">Bericht</label>
+                <textarea asp-for="Message" class="form-control" rows="4" placeholder="Jouw bericht aan ons..."></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Verstuur Bericht" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <h4>Onze Contactgegevens</h4>
+        <p>
+            <strong>Victuz - Studievereniging voor ICT-studenten</strong><br />
+            Zuyd Hogeschool, ICT Academie<br />
+            Adres: Nieuw Eyckholt 300, 6419 DJ Heerlen, Nederland<br />
+            E-mail: <a href="mailto:info@victuz.nl">info@victuz.nl</a><br />
+            Telefoon: +31 (0)45 123 4567<br />
+        </p>
+
+        <h4>Social Media</h4>
+        <p>
+            Volg ons op sociale media voor de laatste updates over evenementen en activiteiten.<br />
+            Facebook: <a href="https://www.facebook.com/victuz" target="_blank">Victuz op Facebook</a><br />
+            Twitter: <a href="https://twitter.com/victuz" target="_blank">Victuz op Twitter</a><br />
+            LinkedIn: <a href="https://www.linkedin.com/company/victuz" target="_blank">Victuz op LinkedIn</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

@@ -1,8 +1,81 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Over Victuz";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="about-section text-center">
+    <div class="container">
+        <h1 class="display-4 text-primary">@ViewData["Title"]</h1>
+        <p class="lead mt-3">Welkom bij <strong>Victuz</strong>, de studievereniging van ICT-studenten voor ICT-studenten uit Zuid-Limburg.</p>
+        <p class="mb-5">Victuz staat voor <strong>Verenigde ICT-ers Uit Zuid-Limburg</strong>. Onze missie is het organiseren van activiteiten die ICT-studenten samenbrengen, verrijken en ondersteunen. Victuz fungeert als verbindende factor om de technologische en persoonlijke groei van studenten te bevorderen.</p>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <h3 class="text-secondary">Onze Missie</h3>
+                <p>Victuz streeft ernaar een hechte community te creëren binnen de ICT Academie van Zuyd. Door boeiende en leerzame activiteiten willen we de persoonlijke en professionele ontwikkeling van studenten bevorderen.</p>
+            </div>
+            <div class="col-md-4">
+                <h3 class="text-secondary">Onze Visie</h3>
+                <p>We willen Victuz uitbouwen tot een krachtige community waarin kennisuitwisseling, vriendschap en ondersteuning centraal staan. Studenten kunnen hier samenkomen om te leren en te groeien.</p>
+            </div>
+            <div class="col-md-4">
+                <h3 class="text-secondary">Wat we Doen</h3>
+                <p>Van workshops en lezingen tot sociale evenementen en hackathons — Victuz biedt een breed scala aan activiteiten. Onze leden kunnen eenvoudig deelnemen via onze webapplicatie.</p>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <a class="btn btn-primary btn-lg mr-3" asp-controller="Aktivities" asp-action="UpcomActView">Bekijk Activiteiten</a>
+            <a class="btn btn-secondary btn-lg" asp-controller="Members" asp-action="Create">Word Lid</a>
+        </div>
+    </div>
+</section>
+
+<section class="history-section mt-5">
+    <div class="container">
+        <h2 class="text-center text-primary mb-4">Het Verhaal van Victuz</h2>
+        <p class="text-center">Victuz is opgericht in het schooljaar 2023-2024, toen een groep enthousiaste studenten van de ICT Academie besloot dat er behoefte was aan meer betrokkenheid en activiteiten, zowel binnen als buiten de school. Het idee: activiteiten organiseren <strong>van studenten, voor studenten</strong>, met steun van de academie en docenten.</p>
+        <p class="text-center">Door de structuur en flexibiliteit die Scrum biedt, hebben we Victuz snel kunnen opzetten. Victuz staat nog in de kinderschoenen, maar dankzij de betrokkenheid van studenten, docenten en leden kunnen we samen blijven groeien en steeds meer aanbieden.</p>
+    </div>
+</section>
+
+<section class="join-section bg-light py-5 mt-5">
+    <div class="container text-center">
+        <h2 class="text-primary">Sluit je aan bij Victuz</h2>
+        <p class="lead">Word deel van een community die samen leert, groeit en werkt. Als ICT-student kun jij een waardevolle bijdrage leveren aan onze dynamische groep!</p>
+        <a class="btn btn-primary btn-lg mt-3" asp-controller="Members" asp-action="Create">Word Lid van Victuz</a>
+    </div>
+</section>
+
+<footer class="mt-5 bg-dark text-light py-3">
+    <div class="container text-center">
+        <p>&copy; 2024 - Victuz | <a class="text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacybeleid</a></p>
+    </div>
+</footer>
+
+<style>
+    .about-section, .history-section, .join-section {
+        padding: 50px 0;
+    }
+
+    .text-primary {
+        color: #007bff !important;
+    }
+
+    .text-secondary {
+        color: #6c757d;
+    }
+
+    .lead {
+        font-size: 1.25rem;
+        font-weight: 300;
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 10px 20px;
+        font-size: 1.1rem;
+    }
+
+    footer {
+        background-color: #343a40;
+    }
+</style>
