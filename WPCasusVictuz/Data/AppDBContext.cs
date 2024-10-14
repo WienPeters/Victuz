@@ -21,12 +21,6 @@ namespace WPCasusVictuz.Data
         public DbSet<Poll> Polls { get; set; }
         public DbSet<Vote> Votes { get; set; }
 
-       
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    string connection = @"Data Source=.;Initial Catalog=Victuz;Integrated Security=true;TrustServerCertificate=True;";
-        //    optionsBuilder.UseSqlServer(connection);
-        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

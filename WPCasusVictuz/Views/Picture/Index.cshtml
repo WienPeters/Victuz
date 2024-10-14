@@ -1,45 +1,33 @@
 ﻿@model IEnumerable<WPCasusVictuz.Models.Picture>
 
 @{
-    ViewData["Title"] = "Picture Gallery";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Photo Gallery";
 }
 
-<h2>Uploaded Pictures</h2>
+<h1>Photo Gallery</h1>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Picture</th>
-            <th>Uploaded By</th>
-            <th>Date Uploaded</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var picture in Model)
-        {
-            <tr>
-                <td>
-                    <img src="@picture.FilePath" alt="Uploaded Picture" style="width:150px;" />
-                </td>
-                <td>
-                    @if (picture.AddedByBoardMember != null)
-                    {
-                        <p>Board Member: @picture.AddedByBoardMember.Name</p>
-                    }
-                    else if (picture.AddedByBoardMember != null)
-                    {
-                        <p>Member: @picture.AddedByBoardMember.Name</p>
-                    }
-                    else
-                    {
-                        <p>Unknown Uploader</p>
-                    }
-                </td>
-                <td>
-                    @picture.UploadDate.ToString("dd/MM/yyyy HH:mm")
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    <img src="@item.FilePath" alt="Uploaded Picture" style="width:100%">
+                </a>
+                <div class="caption">
+                    <p>
+                        Uploaded by:
+                        @if (item.AddedByBoardMember != null)
+                        {
+                            @item.AddedByBoardMember.Name
+                        }
+                        else
+                        {
+                            <span>Unknown</span>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+</div>

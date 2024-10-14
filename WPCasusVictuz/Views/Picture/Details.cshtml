@@ -1,0 +1,28 @@
+﻿@model WPCasusVictuz.Models.Picture
+
+@{
+    ViewData["Title"] = "Photo Details";
+}
+
+<h2>Photo Details</h2>
+
+<div>
+    <img src="@Model.FilePath" alt="Uploaded Picture" style="max-width: 100%;" />
+</div>
+
+<p>
+    <strong>Uploaded by:</strong>
+    @if (Model.AddedByBoardMemberId != null)
+    {
+        @Model.AddedByBoardMember.Name
+    }
+    
+    else
+    {
+        <span>Unknown uploader</span>
+    }
+</p>
+
+<p><strong>Uploaded on:</strong> @Model.UploadDate.ToString("dd/MM/yyyy")</p>
+
+<a asp-action="Index">Back to Photo Gallery</a>

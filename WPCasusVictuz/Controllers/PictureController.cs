@@ -95,4 +95,18 @@ public class PictureController : Controller
         // Redirect to a confirmation or list view
         return RedirectToAction("Index", "Home");
     }
+    public async Task<IActionResult> Details(int id)
+    {
+        var picture = await _context.Pictures
+            .Include(p => p.AddedByBoardMember) // Gebruik de navigatie-eigenschap voor de BoardMember
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (picture == null)
+        {
+            return NotFound();
+        }
+
+        return View(picture);
+    }
+
 }
