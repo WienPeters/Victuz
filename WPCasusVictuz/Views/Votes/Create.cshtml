@@ -1,13 +1,13 @@
 ﻿@model WPCasusVictuz.Models.Vote
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Stem op een poll";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create Vote</h1>
+<h1>Stemmen</h1>
 
-<h4>Vote</h4>
+<h4>Op een poll</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,36 +16,27 @@
 
             <!-- Poll Selection -->
             <div class="form-group">
-                <label asp-for="PollId" class="control-label"></label>
+                <label asp-for="PollId" class="control-label">Kies een vraagstelling</label>
                 <select asp-for="PollId" class="form-control" asp-items="ViewBag.PollId" onchange="loadPollOptions(this.value)"></select>
                 <span asp-validation-for="PollId" class="text-danger"></span>
             </div>
 
-            @* <!-- Member Selection -->
-            <div class="form-group">
-                <label asp-for="MemberId" class="control-label"></label>
-                <select asp-for="MemberId" class="form-control" asp-items="ViewBag.MemberId"></select>
-                <span asp-validation-for="MemberId" class="text-danger"></span>
-            </div> *@
-
+            
             <!-- Poll Options as Radio Buttons -->
             <div class="form-group">
-                <label for="SelectedOption" class="control-label">Select an option</label>
+                <label for="SelectedOption" class="control-label">Kies een antwoord</label>
                 <div id="pollOptionsContainer">
                     <!-- Poll options will be loaded here dynamically via JavaScript -->
                 </div>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Stem" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     <script>

@@ -1,25 +1,25 @@
 ﻿@model WPCasusVictuz.Models.Vote
 
 @{
-    ViewData["Title"] = "CreateIdea";
+    ViewData["Title"] = "Suggereer een idee";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>CreateIdea</h1>
+<h1>Suggereer een activiteit</h1>
 
-<h4>Vote</h4>
+<h4>Als idee</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateIdea">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                @Html.LabelFor(model => model.SelectedOption, "Enter your suggestion for a activity here")
+                @Html.LabelFor(model => model.SelectedOption, "Voer hier jouw suggestie in")
                 <input asp-for="SelectedOption" class="form-control" />
                 <span asp-validation-for="SelectedOption" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Send idea" class="btn btn-primary" />
+                <input type="submit" value="Verzend idee" class="btn btn-primary" />
             </div>
         </form>
     </div>

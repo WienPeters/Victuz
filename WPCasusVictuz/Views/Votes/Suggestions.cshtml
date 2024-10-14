@@ -1,0 +1,27 @@
+﻿@model IEnumerable<WPCasusVictuz.Models.Vote>
+
+@{
+    ViewData["Title"] = "Ingediende Suggesties";
+}
+
+<h2>Ingediende Suggesties</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Member</th>
+            <th>Suggestie</th>
+            <th>Datum</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var suggestion in Model)
+        {
+            <tr>
+                <td>@suggestion.Member.Name</td>
+                <td>@suggestion.SelectedOption</td>
+                <td>@suggestion.CreatedDate.ToString()</td> 
+            </tr>
+        }
+    </tbody>
+</table>

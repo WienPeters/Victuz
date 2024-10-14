@@ -40,14 +40,8 @@ public class PictureController : Controller
     // POST: Upload Picture
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> UploadPicture(IFormFile file)
+    public async Task<IActionResult> UploadPicture(IFormFile file, string PictureName)
     {
-        //if (_httpContextAccessor.HttpContext.Session.GetString("IsBoardMember") != "true")
-        //{
-        //    return RedirectToAction("Index", "Home"); // Redirect unauthorized users to the homepage
-        //}
-
-        
         if (file == null || file.Length == 0)
         {
             ModelState.AddModelError(string.Empty, "Please select a valid picture.");
@@ -75,26 +69,30 @@ public class PictureController : Controller
             await file.CopyToAsync(fileStream);
         }
 
-        // Determine whether it's a Member or BoardMember
-        var userId = HttpContext.Session.GetInt32("UserId");
-        var isBoardMember = HttpContext.Session.GetInt32("IsBoardMember") ;
+        // Get the current user ID
+        var userId = HttpContext.Session.GetInt32("BoardMemberId");
+        var isBoardMember = HttpContext.Session.GetString("IsBoardMember") == "true";
 
         var picture = new Picture
         {
-            FilePath = "/uploads/" + uniqueFileName
+            FilePath = "/uploads/" + uniqueFileName,
+            Name = PictureName, // Sla de ingevoerde naam op
+            UploadDate = DateTime.Now
         };
 
-        
-        picture.AddedByBoardMemberId = HttpContext.Session.GetInt32("BoardMemberId");   // Assign Member as uploader
+        if (isBoardMember)
+        {
+            picture.AddedByBoardMemberId = userId;
+        }
         
 
         // Save the Picture record to the database
         _context.Pictures.Add(picture);
         await _context.SaveChangesAsync();
 
-        // Redirect to a confirmation or list view
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Index");
     }
+
     public async Task<IActionResult> Details(int id)
     {
         var picture = await _context.Pictures

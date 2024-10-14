@@ -1,16 +1,20 @@
 ﻿@model WPCasusVictuz.Models.Picture
 
 @{
-    ViewData["Title"] = "Upload Picture";
+    ViewData["Title"] = "Upload een Foto";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Upload Picture</h2>
+<h2>Upload Foto</h2>
 
 <form asp-action="UploadPicture" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="file">Choose a picture:</label>
+        <label for="file">Kies een afbeelding:</label>
         <input type="file" class="form-control" name="file" />
+    </div>
+    <div class="form-group">
+        <label for="PictureName">Afbeelding Naam:</label> <!-- Label voor de naam -->
+        <input type="text" class="form-control" name="PictureName" /> <!-- Invoerveld voor de naam -->
     </div>
 
     <div class="form-group">

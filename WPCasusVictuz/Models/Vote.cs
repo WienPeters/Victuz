@@ -12,6 +12,9 @@ namespace WPCasusVictuz.Models
         
         public int? MemberId { get; set; }  // Foreign Key linking to Member
         public string? SelectedOption { get; set; }  // The option chosen by the member
+        public DateTime? CreatedDate { get; set; } = DateTime.Now;
+
+        public bool IsSuggestion { get; set; } // True als het een suggestie is
 
         // Navigation properties
         [ForeignKey(nameof(PollId))]

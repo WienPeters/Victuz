@@ -59,29 +59,45 @@ namespace WPCasusVictuz.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,PollId,MemberId,SelectedOption")] Vote vote)
         {
-            // Ensure that poll and member exist and that selected option is valid
-            var poll = _context.Polls.FirstOrDefault(p => p.Id == vote.PollId);
-            if (poll == null )
+            // Controleer of de gebruiker en poll bestaan
+            var poll = await _context.Polls.FirstOrDefaultAsync(p => p.Id == vote.PollId);
+            var memberId = HttpContext.Session.GetInt32("MemberId");
+
+            if (poll == null || memberId == null)
             {
-                ModelState.AddModelError(string.Empty, "Invalid poll or member.");
+                ModelState.AddModelError(string.Empty, "Invalid poll or user.");
+                ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Name", vote.MemberId);
+                ViewData["PollId"] = new SelectList(_context.Polls, "Id", "Question", vote.PollId);
+                return View(vote);
             }
-            else if (!poll.Options.Contains(vote.SelectedOption))
+
+            // Controleer of de optie geldig is
+            if (!poll.Options.Contains(vote.SelectedOption))
             {
                 ModelState.AddModelError("SelectedOption", "Invalid option.");
+                ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Name", vote.MemberId);
+                ViewData["PollId"] = new SelectList(_context.Polls, "Id", "Question", vote.PollId);
+                return View(vote);
             }
 
-            if (ModelState.IsValid)
+            // Controleer of de gebruiker al gestemd heeft op deze poll
+            bool hasVoted = await _context.Votes.AnyAsync(v => v.MemberId == memberId && v.PollId == vote.PollId);
+            if (hasVoted)
             {
-                vote.MemberId = HttpContext.Session.GetInt32("MemberId");
-                _context.Add(vote);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("", "Je hebt al gestemd op deze poll.");
+                ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Name", vote.MemberId);
+                ViewData["PollId"] = new SelectList(_context.Polls, "Id", "Question", vote.PollId);
+                return View(vote);
             }
 
-            ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Name", vote.MemberId);
-            ViewData["PollId"] = new SelectList(_context.Polls, "Id", "Question", vote.PollId);
-            return View(vote);
+            // Indien geldig, sla de stem op
+            vote.MemberId = memberId;
+            _context.Add(vote);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
+
 
         // This action returns poll options in JSON format for the selected poll
         public IActionResult GetPollOptions(int pollId)
@@ -102,17 +118,48 @@ namespace WPCasusVictuz.Controllers
             return View();
         }
 
-        // POST: Votes/Create
+        // POST: Votes/CreateIdea
         [HttpPost]
-        
-        public async Task<IActionResult> CreateIdea([Bind("Id,MemberId,SelectedOption")] Vote vote)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateIdea([Bind("Id,SelectedOption")] Vote vote)
         {
-            vote.PollId = null;
-                vote.MemberId = HttpContext.Session.GetInt32("MemberId");
-                _context.Add(vote);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+            // Markeer het als een suggestie
+            vote.IsSuggestion = true;
+            vote.PollId = null; // Geen poll gekoppeld aan een suggestie
+            vote.MemberId = HttpContext.Session.GetInt32("MemberId").GetValueOrDefault();
+
+            _context.Add(vote);
+            await _context.SaveChangesAsync();
+
+            // Redirect naar een bedankpagina voor suggesties
+            return RedirectToAction(nameof(ThankYou));
         }
+
+        // Bedankpagina voor suggesties
+        public IActionResult ThankYou()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Suggestions()
+        {
+            // Check of de gebruiker een bestuurslid is
+            var isBoardMember = HttpContext.Session.GetString("IsBoardMember") == "true";
+            if (!isBoardMember)
+            {
+                return Unauthorized();
+            }
+
+            // Haal alleen suggesties op
+            var suggestions = await _context.Votes
+                .Include(v => v.Member)
+                .Where(v => v.IsSuggestion)
+                .ToListAsync();
+
+            return View(suggestions);
+        }
+
+
 
         // GET: Votes/Edit/5
         public async Task<IActionResult> Edit(int? id)

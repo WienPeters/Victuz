@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<WPCasusVictuz.Models.Picture>
 
 @{
-    ViewData["Title"] = "Photo Gallery";
+    ViewData["Title"] = "Foto's van Victuz";
 }
 
-<h1>Photo Gallery</h1>
+<h1>Foto's van Victuz</h1>
 
 <div class="row">
     @foreach (var item in Model)
@@ -16,7 +16,7 @@
                 </a>
                 <div class="caption">
                     <p>
-                        Uploaded by:
+                        Geupload door:
                         @if (item.AddedByBoardMember != null)
                         {
                             @item.AddedByBoardMember.Name
