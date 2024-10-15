@@ -72,7 +72,7 @@ namespace WPCasusVictuz.Controllers
 
             return View(activity);
         }
-
+        
         // GET: Aktivities/Create
         public IActionResult Create()
         {

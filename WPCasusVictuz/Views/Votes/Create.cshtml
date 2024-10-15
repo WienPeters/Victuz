@@ -20,7 +20,7 @@
                 <select asp-for="PollId" class="form-control" asp-items="ViewBag.PollId" onchange="loadPollOptions(this.value)"></select>
                 <span asp-validation-for="PollId" class="text-danger"></span>
             </div>
-
+            <hr />
             
             <!-- Poll Options as Radio Buttons -->
             <div class="form-group">
@@ -29,7 +29,7 @@
                     <!-- Poll options will be loaded here dynamically via JavaScript -->
                 </div>
             </div>
-
+            <hr />
             <div class="form-group">
                 <input type="submit" value="Stem" class="btn btn-primary" />
             </div>

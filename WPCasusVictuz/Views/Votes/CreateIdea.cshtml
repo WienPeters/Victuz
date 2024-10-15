@@ -15,9 +15,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 @Html.LabelFor(model => model.SelectedOption, "Voer hier jouw suggestie in")
+                <hr />
                 <input asp-for="SelectedOption" class="form-control" />
                 <span asp-validation-for="SelectedOption" class="text-danger"></span>
+               
             </div>
+            <hr />
             <div class="form-group">
                 <input type="submit" value="Verzend idee" class="btn btn-primary" />
             </div>
@@ -25,7 +28,4 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 

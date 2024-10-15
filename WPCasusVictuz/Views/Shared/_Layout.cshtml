@@ -19,26 +19,36 @@
                             <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Victuz </a>
                             <div class="dropdown-menu text-dark-emphasis">
                                 <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Home" asp-action="Index">Over Victuz</a>
+                                <div class="dropdown-divider text-body-tertiary"></div>
                                 <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Home" asp-action="Contact">Contact met Victuz</a>
+                                <div class="dropdown-divider text-body-tertiary"></div>
                                 <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Home" asp-action="Bylaw">Statuten</a>
                             </div>
                         </li>
                         
                         <li class="nav-item dropdown text-dark-emphasis">
-                            <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Activiteiten met Victuz </a>
+                            <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Victuz activiteiten</a>
                             <div class="dropdown-menu text-dark-emphasis">
                                 <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Aktivities" asp-action="UpcomActView">Aankomende activiteiten</a>
                                 <div class="dropdown-divider text-body-tertiary"></div>
                                 <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Aktivities" asp-action="PastActView">Gepasseerde Activiteiten</a>
+                                @if (string.IsNullOrEmpty(Context.Session.GetString("UserName"))) 
+                                { }
+                                else
+                                {
+                                    <div class="dropdown-divider text-body-tertiary"></div>
+                                    <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Aktivities" asp-action="Index">Zoek tussen alle activiteiten</a>
+                                }                               
                             </div>
                         </li>
                         <li class="nav-item dropdown text-dark-emphasis">
                             <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Victuz Media </a>
                             <div class="dropdown-menu text-dark-emphasis">
                                 <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Picture" asp-action="Index">Foto's van Victuz</a>
+                                <div class="dropdown-divider text-body-tertiary"></div>
                                 <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Picture" asp-action="UploadPicture">Upload een foto</a>
-                                <li class="nav-divider text-dark accordion"></li> <!-- Divider -->
-                        <!-- Conditionally display based on login status -->
+                                <li class="nav-divider text-dark accordion"></li> 
+                        
                         @if (string.IsNullOrEmpty(Context.Session.GetString("UserName")))
                         {
                             <li class="nav-item">
@@ -51,42 +61,43 @@
                         else
                         {
                             <li class="nav-item dropdown text-dark-emphasis">
-                                <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Laat je mening horen!</a>
+                                <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Geef je mening!</a>
                                 <div class="dropdown-menu text-dark-emphasis">
                                     <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Votes" asp-action="Create">Beantwoordt een poll!</a>
+                                    <div class="dropdown-divider text-body-tertiary"></div>
                                     <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Votes" asp-action="createIdea">Suggereer een Idee!</a>
                                     
                                 </div>
                             </li>
-                            <li class="nav-item dropdown text-dark-emphasis">
-                                <a class="nav-link text-dark-emphasis dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Activiteiten </a>
-                                <div class="dropdown-menu text-dark-emphasis">
-                                <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Registrations" asp-action="Create">Neem deel aan een activiteit!</a>
-                                <a class="dropdown-item text-body-tertiary" asp-area="" asp-controller="Aktivities" asp-action="Index">Zoek een activiteit op</a>
-                                </div>
-                            </li>
-                            <li class="nav-divider text-dark accordion"></li> <!-- Divider -->
+                                   
+                            <li class="nav-divider text-dark accordion"></li> 
                             @if (HttpContextAccessor.HttpContext.Session.GetString("IsBoardMember") == "true")
                             {
                                 <li class="nav-item dropdown text-info-emphasis">
                                     <a class="nav-link dropdown-toggle text-info-emphasis" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Overzicht van</a>
                                     <div class="dropdown-menu text-info-emphasis">
                                         <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Members" asp-action="Index">Alle leden</a>
+                                        <div class="dropdown-divider text-body-tertiary"></div>
                                         <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Aktivities" asp-action="Index">Alle Activiteiten</a>
+                                        <div class="dropdown-divider text-body-tertiary"></div>
                                         <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Polls" asp-action="Index">Alle Polls</a>
-                                        <div class="dropdown-divider text-danger-emphasis"></div>
-                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Member" asp-action="Indexe">Alle Bestuursleden</a>
+                                        <div class="dropdown-divider text-body-tertiary"></div>
+                                        <div class="dropdown-divider text-body-tertiary"></div>
                                         <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Registrations" asp-action="Index">Aanmeldingenen v.d. activiteiten</a>
+                                        <div class="dropdown-divider text-body-tertiary"></div>
                                         <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Votes" asp-action="Index">Gegeven antwoorden</a>
+                                        <div class="dropdown-divider text-body-tertiary"></div>
                                         <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Votes" asp-action="Suggestions">Gemaakte suggesties</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown text-danger-emphasis">
-                                    <a class="nav-link text-info-emphasis dropdown-toggle " data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Creation|Organisation</a>
+                                    <a class="nav-link text-info-emphasis dropdown-toggle " data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Aanmaken</a>
                                     <div class="dropdown-menu text-info-emphasis">
-                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Aktivities" asp-action="Create">Organiseer Activiteiten</a>
-                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Polls" asp-action="Create">Stel een pollstelling op</a>
-                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Members" asp-action="CreateBoardmember">Maak een bestuurslid aan</a>
+                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Aktivities" asp-action="Create">Activiteit aanmaken</a>
+                                        <div class="dropdown-divider text-body-tertiary"></div>
+                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Polls" asp-action="Create">Pollstelling aanmaken</a>
+                                        <div class="dropdown-divider text-body-tertiary"></div>
+                                        <a class="dropdown-item text-info-emphasis" asp-area="" asp-controller="Members" asp-action="CreateBoardmember">Bestuurslid aanmaken</a>
                                     </div>
                                 </li>
                             }

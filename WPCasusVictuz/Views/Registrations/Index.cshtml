@@ -38,8 +38,8 @@
                 @Html.DisplayFor(modelItem => item.Aktivity.Name)
             </td>
             <td>
-                
-                <a asp-action="Delete" asp-route-id="@item.Id">Unroll from activity</a>
+                <a asp-action="Create" asp-route-id="@item.Id">Inschrijven ||</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">Uitschrijven</a>
             </td>
         </tr>
 }

@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<WPCasusVictuz.Models.Aktivity>
 
 @{
-    ViewData["Title"] = "Activities";
+    ViewData["Title"] = "Activiteiten overzicht";
 }
 
-<h1>Activities</h1>
+<h1>Overzicht activiteiten</h1>
 
 <!-- Zoekformulier -->
 <form asp-controller="Aktivities" asp-action="Index" method="get">
     <div class="form-group">
-        <input type="text" name="searchTerm" class="form-control" placeholder="Zoek op activiteiten..." />
+        <input type="text" name="searchTerm" class="form-control" placeholder="Zoek activiteiten..." />
         <button type="submit" class="btn btn-primary mt-2">Zoeken</button>
     </div>
 </form>
@@ -17,10 +17,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Location</th>
-            <th>Description</th>
+            <th>Naam activiteit</th>
+            <th>Datum & Starttijd</th>
+            <th>Waar</th>
+            <th>Beschrijving</th>
             <th></th>
         </tr>
     </thead>
@@ -32,11 +32,11 @@
                 <td>
                     @if (item.Date.HasValue)
                     {
-                        @item.Date.Value.ToShortDateString()
+                        @item.Date.Value.ToString()
                     }
                     else
                     {
-                        <text>N/A</text> <!-- Of wat je ook wilt weergeven als de datum null is -->
+                        <text>Geen datum ingevoerd</text> 
                     }
                 </td>
                 <td>@item.Location</td>

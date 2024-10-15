@@ -7,9 +7,9 @@
 <h2>@Model.Name</h2>
 
 <p>@Model.Description</p>
-<p><strong>Date:</strong> @Model.Date.ToString()</p>
-<p><strong>Location:</strong> @Model.Location</p>
-<p><strong>Participants:</strong> @Model.CurrentParticipants / @Model.MaxParticipants</p>
+<p><strong>Datum & tijd:</strong> @Model.Date.ToString()</p>
+<p><strong>Locatie:</strong> @Model.Location</p>
+<p><strong>Aantal deelnemers:</strong> @Model.CurrentParticipants / @Model.MaxParticipants</p>
 
 @if (TempData["Error"] != null)
 {
@@ -31,7 +31,7 @@
     {
         <form asp-controller="Registrations" asp-action="RegisterForActivity" method="post">
             <input type="hidden" name="activityId" value="@Model.Id" />
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary">Schrijf je in</button>
         </form>
 
     }
@@ -47,15 +47,15 @@
 }
 else
 {
-    <a asp-controller="Members" asp-action="Login" class="btn btn-primary">Login to Register</a>
+    <a asp-controller="Members" asp-action="Login" class="btn btn-primary">Log je in om in te schrijven</a>
 }
 
-<h3>Registrations</h3>
+<h3>Inschrijvingen</h3>
 <table class="table">
     <thead>
         <tr>
-            <th>Member Name</th>
-            <th>Registration Date</th>
+            <th>Naam lid</th>
+            <th>Registratie datum</th>
         </tr>
     </thead>
     <tbody>
@@ -68,7 +68,7 @@ else
                 @if (Context.Session.GetString("IsBoardMember") == "true")
                 {
                     <td>
-                        <a asp-controller="Registrations" asp-action="Delete" asp-route-id="@registration.Id" class="btn btn-danger btn-sm">Remove</a>
+                        <a asp-controller="Registrations" asp-action="Delete" asp-route-id="@registration.Id" class="btn btn-danger btn-sm">uitschrijven</a>
                     </td>
                 }
             </tr>
@@ -76,4 +76,4 @@ else
     </tbody>
 </table>
 
-<a asp-action="Index" class="btn btn-secondary">Back to Activities List</a>
+<a asp-action="Index" class="btn btn-secondary">Terug naar activiteitenlijst</a>
