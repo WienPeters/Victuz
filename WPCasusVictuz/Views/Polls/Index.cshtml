@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Overzicht polls</h1>
+<h1>Overzicht vraagstellingen</h1>
 
 <p>
     <a asp-action="Create">Maak een nieuwe poll aan</a>
@@ -14,15 +14,15 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.First().Question) <!-- Display name for Poll Question -->
+                Vraagstelling
             </th>
             <th>
-                Options <!-- Custom display name for Poll Options -->
+                Antwoord opties
             </th>
             <th>
-                @Html.DisplayName("Created By") <!-- Custom display name for CreatedBy -->
+                aangemaakt door
             </th>
-            <th></th>
+            <th>Beheer</th>
         </tr>
     </thead>
     <tbody>
@@ -39,9 +39,8 @@
                     @(item.CreatedBy != null ? item.CreatedBy.Name : "N/A") <!-- Direct Razor expression for CreatedBy -->
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Wijzigen</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Verwijderen</a>
                 </td>
             </tr>
         }

@@ -1,15 +1,14 @@
 ﻿@model WPCasusVictuz.Models.Aktivity
 
 @{
-    ViewData["Title"] = "Activiteit Details";
+    ViewData["Title"] = "Details van activiteit";
 }
 
 <h2>@Model.Name</h2>
-
 <p>@Model.Description</p>
-<p><strong>Datum & tijd:</strong> @Model.Date.ToString()</p>
+<p><strong>Datum:</strong> @Model.Date?.ToString("dd-MM-yyyy")</p>
 <p><strong>Locatie:</strong> @Model.Location</p>
-<p><strong>Aantal deelnemers:</strong> @Model.CurrentParticipants / @Model.MaxParticipants</p>
+<p><strong>Deelnemers:</strong> @Model.CurrentParticipants / @Model.MaxParticipants</p>
 
 @if (TempData["Error"] != null)
 {
@@ -25,55 +24,36 @@
 {
     var userId = Context.Session.GetInt32("MemberId");
     bool isRegistered = Model.Registrations.Any(r => r.MemberId == userId);
-    bool isBoardMember = Context.Session.GetString("IsBoardMember") == "true";
 
-    @if (Model.CurrentParticipants < Model.MaxParticipants)
+    if (isRegistered)
     {
-        <form asp-controller="Registrations" asp-action="RegisterForActivity" method="post">
+        // Het lid is ingeschreven, toon afmeldknop
+        <form asp-controller="Registrations" asp-action="UnregisterFromActivity" method="post">
             <input type="hidden" name="activityId" value="@Model.Id" />
-            <button type="submit" class="btn btn-primary">Schrijf je in</button>
+            <button type="submit" class="btn btn-warning">Afmelden</button>
         </form>
-
     }
     else
     {
-        <p class="text-danger">Deze activiteit is vol.</p>
+        // Het lid is niet ingeschreven, toon inschrijfknop
+        if (Model.CurrentParticipants < Model.MaxParticipants)
+        {
+            <form asp-controller="Registrations" asp-action="RegisterForActivity" method="post">
+                <input type="hidden" name="activityId" value="@Model.Id" />
+                <button type="submit" class="btn btn-primary">Schrijf je in</button>
+            </form>
+        }
+        else
+        {
+            // De activiteit is vol
+            <p class="text-danger">Deze activiteit is vol.</p>
+        }
     }
-
-    <form asp-controller="Registrations" asp-action="UnregisterFromActivity" method="post">
-        <input type="hidden" name="activityId" value="@Model.Id" />
-        <button type="submit" class="btn btn-warning">Afmelden</button>
-    </form>
 }
 else
 {
-    <a asp-controller="Members" asp-action="Login" class="btn btn-primary">Log je in om in te schrijven</a>
+    // Het lid is niet ingelogd
+    <a asp-controller="Members" asp-action="Login" class="btn btn-primary">Login om je in te schrijven</a>
 }
-
-<h3>Inschrijvingen</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Naam lid</th>
-            <th>Registratie datum</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var registration in Model.Registrations)
-        {
-            <tr>
-                <td>@registration.Member.Name</td>
-                <td>@registration.RegistrationDate.ToString()</td>
-                @* Indien de huidige gebruiker een bestuurslid is, toon een optie om te verwijderen *@
-                @if (Context.Session.GetString("IsBoardMember") == "true")
-                {
-                    <td>
-                        <a asp-controller="Registrations" asp-action="Delete" asp-route-id="@registration.Id" class="btn btn-danger btn-sm">uitschrijven</a>
-                    </td>
-                }
-            </tr>
-        }
-    </tbody>
-</table>
 
 <a asp-action="Index" class="btn btn-secondary">Terug naar activiteitenlijst</a>

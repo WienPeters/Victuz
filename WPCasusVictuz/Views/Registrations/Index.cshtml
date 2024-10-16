@@ -1,28 +1,26 @@
 ﻿@model IEnumerable<WPCasusVictuz.Models.Registration>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Overzicht inschrijvingen";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Overzicht van inschrijvingen</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                Date of registration
+                Datum inschrijving
             </th>
             <th>
-                Participant name
+                Naam deelnemer
             </th>
             <th>
-                Activity
+                Activiteit
             </th>
-            <th></th>
+            <th>Wijzigen</th>
         </tr>
     </thead>
     <tbody>
@@ -38,7 +36,7 @@
                 @Html.DisplayFor(modelItem => item.Aktivity.Name)
             </td>
             <td>
-                <a asp-action="Create" asp-route-id="@item.Id">Inschrijven ||</a>
+                
                 <a asp-action="Delete" asp-route-id="@item.Id">Uitschrijven</a>
             </td>
         </tr>

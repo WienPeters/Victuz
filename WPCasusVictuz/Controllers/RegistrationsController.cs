@@ -293,10 +293,9 @@ namespace WPCasusVictuz.Controllers
         public async Task<IActionResult> RegisterForActivity(int? activityId)
         {
             // Check if the activityId is valid and not null
-            if (activityId == 0)
+            if (activityId == null)
             {
-                ModelState.AddModelError("", "Invalid activity ID.");
-                return RedirectToAction("Index");
+                return NotFound();
             }
 
             var activity = await _context.Activities.FindAsync(activityId);
@@ -313,11 +312,11 @@ namespace WPCasusVictuz.Controllers
             }
 
             // Register the user
-            var userId = GetCurrentMemberId();
+            var userId = HttpContext.Session.GetInt32("MemberId");
             var registration = new Registration
             {
-                MemberId = userId,
-                AktivityId = activityId
+                MemberId = userId.Value,
+                AktivityId = activityId.Value
             };
 
             _context.Registrations.Add(registration);
@@ -331,16 +330,29 @@ namespace WPCasusVictuz.Controllers
 
 
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UnregisterFromActivity(int? activityId)
         {
+            if (activityId == null)
+            {
+                return NotFound();
+            }
+
+            var userId = HttpContext.Session.GetInt32("MemberId");
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
             var registration = await _context.Registrations
-                .FirstOrDefaultAsync(r => r.AktivityId == activityId && r.MemberId == GetCurrentMemberId());
+                .FirstOrDefaultAsync(r => r.AktivityId == activityId && r.MemberId == userId);
 
             if (registration == null)
             {
-                return NotFound();
+                TempData["Error"] = "Je bent niet geregistreerd voor deze activiteit.";
+                return RedirectToAction("Details", "Aktivities", new { id = activityId });
             }
 
             // Verwijder de registratie
@@ -352,13 +364,14 @@ namespace WPCasusVictuz.Controllers
             {
                 activity.CurrentParticipants -= 1;
                 _context.Activities.Update(activity);
-                await _context.SaveChangesAsync();
             }
 
             await _context.SaveChangesAsync();
 
+            TempData["Success"] = "Je bent succesvol uitgeschreven van de activiteit.";
             return RedirectToAction("Details", "Aktivities", new { id = activityId });
         }
+
 
         private int GetCurrentMemberId()
         {

@@ -22,8 +22,23 @@ namespace WPCasusVictuz.Controllers
         // GET: Votes
         public async Task<IActionResult> Index()
         {
-            var appDBContext = _context.Votes.Include(v => v.Member).Include(v => v.Poll);
+            // Filter de stemmen en sluit de suggesties uit (IsSuggestion == false)
+            var appDBContext = _context.Votes
+                .Include(v => v.Member)
+                .Include(v => v.Poll)
+                .Where(v => v.IsSuggestion == false); // Filter alleen de votes, geen suggesties
+
             return View(await appDBContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> Suggestions()
+        {
+            // Haal alleen de suggesties op (IsSuggestion == true)
+            var suggestions = _context.Votes
+                .Include(v => v.Member)
+                .Where(v => v.IsSuggestion == true); // Filter alleen suggesties
+
+            return View(await suggestions.ToListAsync());
         }
 
         // GET: Votes/Details/5
@@ -141,24 +156,7 @@ namespace WPCasusVictuz.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Suggestions()
-        {
-            // Check of de gebruiker een bestuurslid is
-            var isBoardMember = HttpContext.Session.GetString("IsBoardMember") == "true";
-            if (!isBoardMember)
-            {
-                return Unauthorized();
-            }
-
-            // Haal alleen suggesties op
-            var suggestions = await _context.Votes
-                .Include(v => v.Member)
-                .Where(v => v.IsSuggestion)
-                .ToListAsync();
-
-            return View(suggestions);
-        }
-
+       
 
 
         // GET: Votes/Edit/5
